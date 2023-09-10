@@ -36,9 +36,9 @@ void Player::b() {
 			tim = 20;
 			}
 		}
-	} else {
-		bButtonReleased_ = true; // Bボタンがリリースされたことを記録
-	}
+	}else {
+            bButtonReleased_ = true; // Bボタンがリリースされたことを記録
+        }
 	
 	}
 }
@@ -81,7 +81,6 @@ void Player::Update() {
 	/*弾*/
 	b();
 	tim--;
-	Vector3 move2 = {0, 0, 0};
 	const float kCharacterSpeed2 = 2.0f;
 	move2.y += kCharacterSpeed2;
 

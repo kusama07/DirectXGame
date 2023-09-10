@@ -32,4 +32,5 @@ private:
 	int32_t tim = 20;
 	Vector3 bulletOffset = {2.0f, 0.0f, 0.0f};
 	bool bButtonReleased_ = true;
+	Vector3 move2 = {0, 0, 0};
 };
