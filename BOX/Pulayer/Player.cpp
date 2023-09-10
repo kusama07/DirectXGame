@@ -24,6 +24,7 @@ void Player::b() {
 	}
 	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B) {
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) {
+			if (bButtonReleased_) {
 			BoxType* box2_ = new BoxType;
 			
 			// 弾の位置を計算してオフセットを適用
@@ -31,8 +32,12 @@ void Player::b() {
 
 			box2_->Initialize(model_, bulletPosition);
 			boxs_.push_back(box2_);
+			bButtonReleased_ = false; // Bボタンが押されたことを記録
 			tim = 20;
+			}
 		}
+	} else {
+		bButtonReleased_ = true; // Bボタンがリリースされたことを記録
 	}
 	
 	}
