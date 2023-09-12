@@ -1,7 +1,17 @@
-﻿#include"BOX/math/math.h"
+#include"BOX/math/math.h"
 #define _USE_MATH_DEFINES
 #include <cassert>
 #include <cmath>
+
+Vector3 Multiply(const float& v1, const Vector3& v2) {
+	Vector3 result{};
+
+	result.x = v1 * v2.x;
+	result.y = v1 * v2.y;
+	result.z = v1 * v2.z;
+
+	return result;
+}
 
 Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 	Matrix4x4 result{};
@@ -139,4 +149,23 @@ Vector3 Add(const Vector3& v1, const Vector3& v2) {
 	result.y = v1.y + v2.y;
 	result.z = v1.z + v2.z;
 	return result;
+}
+
+Vector3 Normalize(const Vector3& v) {
+	Vector3 result{};
+
+	float date = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	if (date != 0) {
+		result.x = v.x / date;
+		result.y = v.y / date;
+		result.z = v.z / date;
+	}
+	return result;
+}
+
+bool IsCollision(const AABB& aabb1, const AABB& aabb2) {
+	// AABBがX軸、Y軸、Z軸に沿って重なっている
+	return (aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) &&
+	       (aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) &&
+	       (aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z);
 }

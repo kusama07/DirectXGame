@@ -5,9 +5,9 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() { 
-	delete model_;
-	delete player_;
-
+	for (BoxType* box : boxs_) {
+		delete box;
+	}
 
 }
 
@@ -18,17 +18,21 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	
 	
-	textureHandle_ = TextureManager::Load("e.png");
-	model_ = Model::Create();
+	model_.reset(Model::Create());
+	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 	
-	player_ = new Player();
-	player_->Initialize(model_, textureHandle_);
+	playerModel_.reset(Model::CreateFromOBJ("player", true));
+
+	// プレイヤー
+	player_ = std::make_unique<Player>();
+	player_->Initialize(playerModel_.get());
 }
 
 void GameScene::Update() {
-	
-		player_->Update();
+
+	player_->Update();
+	CheckAllCollisions();
 
 }
 
@@ -77,4 +81,24 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollisions() {
+
+	// プレイヤーのAABBを取得
+	playerAABB = player_->GetAABB();
+
+	for (BoxType* box : boxs_) {
+
+		// 箱のAABBを取得
+		boxAABB = box->GetAABB();
+
+		// プレイヤーと箱のAABBが重なっているかチェック
+		if (IsCollision(playerAABB, boxAABB)) {
+			// 重なっている場合の処理をここに追加
+			player_->SetVelocity(Vector3(0.0f, 0.0f, 0.0f));
+			player_->AdjustPositionOnBox(boxAABB.max.y + player_->GetPlayerHeight() / 2.0f);
+		}
+	}
+
 }
